@@ -24,6 +24,10 @@
 \usepackage{comment}
 
 \usepackage{tikz}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{calc}
+\usetikzlibrary{shapes.multipart}
+\usetikzlibrary{arrows}
 
 \urlstyle{sf}
 
@@ -42,25 +46,6 @@
 		{ö}{{\"o}}1
 	        {ä}{{\"a}}1
                 {ü}{{\"u}}1
-                {ℕ}{{$\mathbb N$}}1
-                {≤}{{$\le$}}1
-                {-}{{\text-}}1
-                {≡}{{$\equiv$}}1
-                {≢}{{$\not\equiv$}}1
-                {∎}{{$\blacksquare$}}1
-                {□}{{$\square$}}1
-                {⟨}{{$\langle$}}1
-                {⟩}{{$\rangle$}}1
-                {→}{{$\rightarrow$}}1
-                {⇒}{{$\Rightarrow$}}1
-                {∸}{{$\stackrel{\bullet}{-}$}}1
-                {∷}{{$::$}}1
-                {∣}{{$\mid$}}1
-                {¬}{{$\neg$}}1
-                {∀}{{$\forall$}}1
-                {⊥}{{$\bot$}}1
-                {λ}{{\textlambda}}1
-                {′}{{'}}1
         ,columns=flexible
         ,basewidth={.365em}
         ,keepspaces=True
@@ -263,8 +248,86 @@ infList2 f x = let l = f x : l in l
 \end{haskell}
 und untersuchen \li-l3 = infList2 (+19) (23::Int)- mit \li-:view-. Tatsächlich wird hier die Cons-Zelle und die 42 nur jeweils einmal berechnet, danach zeigt der Tail der Liste wieder auf die Liste selbst. Auf diese Weise schafft es Haskell tatsächlich, eine unendliche Listen in endlich viel Speicher zu speichern!
 
-Leider sind solche selbstbezüglichen Datenstrukturen fragil wenn man sie „ändern“ will; schon ein einfaches \li-map negate l2- zerstört die Struktur, wie man hier gut sehen kann.
+Leider sind solche selbstbezüglichen Datenstrukturen fragil, wenn man sie „ändern“ will; schon ein einfaches \li-map negate l2- zerstört die Struktur, wie man hier gut sehen kann.
 
+
+
+\section{Der Info-Pointer}
+
+Zum Schluss will ich noch darauf eingehen, was das erste Wort jedes Closures ist. Ihr habt vielleicht schon beobachtet, dass es stets in den statischen Code-Bereich zeigt. Und euch ist sicher schon aufgefallen, dass die Information, welcher Konstruktor das denn gerade ist, oder wo der ausführbare Code einer Funktion steht, ja noch irgendwo stehen muss. All das, und noch viel mehr, versteckt sich hinter dem Info-Pointer:
+
+\def\ux{2.8cm}\def\uy{0.6cm}
+\begin{center}
+\begin{tikzpicture}[x=\ux, y=\uy,
+	word/.style={shape=rectangle, draw, minimum width=\ux, minimum height=\uy}
+	,halfword/.style={shape=rectangle, draw, minimum width=0.5*\ux, minimum height=\uy}
+	,>=latex]
+\draw (0,0) rectangle +(1,1) node[midway] (ip) {Info-Pointer}
+    ++(1,0) rectangle +(1,1) node[midway] {Pointer}
+    ++(1,0) rectangle +(1,1) node[midway] {Pointer}
+    ++(1,0) +(0.1,0.4) node {$\cdots$}
+    ++(0.2,0) rectangle +(1,1) node[midway] {Nicht-Pointer}
+    ++(1,0) rectangle +(1,1) node[midway] {Nicht-Pointer}
+    ++(1,0) +(0.1,0.4) node {$\cdots$};
+
+\begin{scope}[yshift=-0.7cm, xshift=1.2*\ux]
+\draw
+  (0,0) node[word] (tbl) {Code-Pointer}
+++(-0.25,-1) node[halfword] {\#ptr}
+++(+0.5,0) node[halfword] {\#nptr}
+++(-0.25,-1) node[word] {Closure-Typ}
+++(0,-1) node[word] {ggf. Konstruktor}
+++(0,-1) node[word] {ggf. Stelligkeit};
+\end{scope}
+\draw[*->] (ip.south) |- (tbl.west);
+\draw[*->] (tbl.east) -- ++(1.5cm,0) node[right] (code) {Entry code};
+\draw (code) ++(-0.5,-1) -- ++(0,1.5) -- ++(1,0) -- ++(0,-1.5);
+\end{tikzpicture}
+\end{center}
+
+Hier ist noch interessant dass die Parameter eines Konsturktors bzw. die freien Variablen einer Funktion stets so angeordnet sind, dass erst die Zeiger und dann die anderen Werte kommen. Damit kann die Größe und das Layout des Closures in zwei Halbworten gespeichert werden, die sich der Garbage Collector anschaut, ohne eigenen Code für jeden Konstruktor zu benötigen.
+
+Was aber am häufigsten mit so einem Closure passiert ist, dass er ausgeführt wird. Daher sieht das ganze in Wirklichkeit nochmal anders aus. Der Zeiger im Closure zeigt direkt an den Anfang des Funktionscodes, und der Compiler legt die Tabelle direkt davor. Das ist zwar eine unübliche Mischung von Daten und Code, aber der Compiler darf sowas.
+
+\begin{center}
+\begin{tikzpicture}[x=\ux, y=\uy,
+	word/.style={shape=rectangle, draw, minimum width=\ux, minimum height=\uy}
+	,halfword/.style={shape=rectangle, draw, minimum width=0.5*\ux, minimum height=\uy}
+	,>=latex]
+\draw (0,0) rectangle +(1,1) node[midway] (ip) {Info-Pointer}
+    ++(1,0) rectangle +(1,1) node[midway] {Pointer}
+    ++(1,0) rectangle +(1,1) node[midway] {Pointer}
+    ++(1,0) +(0.1,0.4) node {$\cdots$}
+    ++(0.2,0) rectangle +(1,1) node[midway] {Nicht-Pointer}
+    ++(1,0) rectangle +(1,1) node[midway] {Nicht-Pointer}
+    ++(1,0) +(0.1,0.4) node {$\cdots$};
+
+\begin{scope}[yshift=-0.7cm, xshift=1.2*\ux]
+\draw
+  (0,0) node[word] {ggf. Konstruktor}
+++(0,-1) node[word] {ggf. Stelligkeit}
+++(-0.25,-1) node[halfword] {\#ptr}
+++(+0.5,0) node[halfword] {\#nptr}
+++(-0.25,-1) node[word] {Closure-Typ}
+++(0,-1) node[word,draw=none] (code) {Entry code};
+\end{scope}
+\draw[*->] (ip.south) |- (code.west);
+\draw (code) ++(-0.5,-1) -- ++(0,1.5) -- ++(1,0) -- ++(0,-1.5);
+\end{tikzpicture}
+\end{center}
+
+
+\section{Fazit}
+
+Damit bin ich am Ende meines Vortrages. Wir haben uns die Mühe gemacht, all die vielen komfortablen Abstraktionsschichten, die uns Haskell bereitstellt, beiseite zu schieben und haben einen ungetrübten Blick auf den Speicher geworfen. Wir haben gesehen dass die Daten doch einigermaßen übersichtlich und effizient gespeichert werden. Wir haben auch gesehen, warum \li-Strings-s so teuer sind und wie man eine unendlich lange Liste in wenigen Bytes speichert. Ich hoffe, dass euch dieser Vortrag hilft besser zu verstehen, warum eure Haskell-Programme so laufen wie sie laufen, und zu wissen, wie ihr sie besser laufen lassen könnt.
+
+\section{Referenzen}
+
+\begin{itemize}
+\item Was wir hier gesehen haben ist in der Wissenschaft als \emph{Spineless, tagless G-machine} bekannt. \url{http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.53.3729}
+\item Das GHC-Wiki beschreibt die aktuelle Implementierung am pragmatischten, insbesondere \url{http://hackage.haskell.org/trac/ghc/wiki/Commentary/Rts/Storage/HeapObjects}.
+\item Wir haben hier meine Bibliothek ghc-heap-view (\url{http://hackage.haskell.org/package/ghc-heap-view}) und Dennis Felsing’s ghc-vis (\url{http://felsin9.de/nnis/ghc-vis/}) verwendet.
+\end{itemize}
 
 
 \end{document}
