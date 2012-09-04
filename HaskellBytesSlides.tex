@@ -27,6 +27,10 @@
 \usepackage{tikz}
 \usetikzlibrary{decorations.pathreplacing,calc}
 \usetikzlibrary{positioning,calc,decorations,decorations.pathmorphing,shapes.geometric,matrix}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{calc}
+\usetikzlibrary{shapes.multipart}
+\usetikzlibrary{arrows}
 \usepackage{hyperref}
 
 \usepackage{mathtools}
@@ -130,15 +134,64 @@
 }
 
 
+\def\ux{2.7cm}\def\uy{0.6cm}
 \begin{frame}
-\frametitle{Drei Arten von Closures}
+\frametitle{Der Info-Pointer}
 \begin{center}
-\begin{tikzpicture}[
-        closure/.style={shape=rectangle, rounded corners, minimum width=2.8cm,fill=blue!40,font=\bfseries},
-        prop/.style={},
-	brace/.style={decoration={brace,amplitude=0.5em},decorate,thick}
-	]
-\onslide+<0->
+\begin{tikzpicture}[x=\ux, y=\uy,
+        word/.style={shape=rectangle, draw, minimum width=\ux, minimum height=\uy,font=\small}
+        ,halfword/.style={shape=rectangle, draw, minimum width=0.5*\ux, minimum height=\uy,font=\small}
+        ,>=latex]
+\draw (0,0) rectangle +(1,1) node[midway] (ip) {Info-Pointer}
+    ++(1,0) rectangle +(1,1) node[midway] {Pointer}
+%    ++(1,0) rectangle +(1,1) node[midway] {Pointer}
+    ++(1,0) +(0.1,0.4) node {$\cdots$}
+    ++(0.2,0) rectangle +(1,1) node[midway] {Nicht-Pointer}
+ %   ++(1,0) rectangle +(1,1) node[midway] {Nicht-Pointer}
+    ++(1,0) +(0.1,0.4) node {$\cdots$};
+
+\begin{scope}[yshift=-0.7cm, xshift=1.2*\ux]
+\draw
+  (0,0) node[word] (tbl) {Code-Pointer}
+++(-0.25,-1) node[halfword] {\#ptr}
+++(+0.5,0) node[halfword] {\#nptr}
+++(-0.25,-1) node[word] {Closure-Typ}
+++(0,-1) node[word] {ggf. Konstruktor}
+++(0,-1) node[word] {ggf. Stelligkeit};
+\end{scope}
+\draw[*->] (ip.south) |- (tbl.west);
+\draw[*->] (tbl.east) -- ++(1.5cm,0) node[right] (code) {Entry code};
+\draw (code) ++(-0.5,-1) -- ++(0,1.5) -- ++(1,0) -- ++(0,-1.5);
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Der echte Info-Pointer}
+\begin{center}
+\begin{tikzpicture}[x=\ux, y=\uy,
+        word/.style={shape=rectangle, draw, minimum width=\ux, minimum height=\uy,font=\small}
+        ,halfword/.style={shape=rectangle, draw, minimum width=0.5*\ux, minimum height=\uy,font=\small}
+        ,>=latex]
+\draw (0,0) rectangle +(1,1) node[midway] (ip) {Info-Pointer}
+    ++(1,0) rectangle +(1,1) node[midway] {Pointer}
+%    ++(1,0) rectangle +(1,1) node[midway] {Pointer}
+    ++(1,0) +(0.1,0.4) node {$\cdots$}
+    ++(0.2,0) rectangle +(1,1) node[midway] {Nicht-Pointer}
+%    ++(1,0) rectangle +(1,1) node[midway] {Nicht-Pointer}
+    ++(1,0) +(0.1,0.4) node {$\cdots$};
+
+\begin{scope}[yshift=-0.7cm, xshift=1.2*\ux]
+\draw
+  (0,0) node[word] {ggf. Konstruktor}
+++(0,-1) node[word] {ggf. Stelligkeit}
+++(-0.25,-1) node[halfword] {\#ptr}
+++(+0.5,0) node[halfword] {\#nptr}
+++(-0.25,-1) node[word] {Closure-Typ}
+++(0,-1) node[word,draw=none] (code) {Entry code};
+\end{scope}
+\draw[*->] (ip.south) |- (code.west);
+\draw (code) ++(-0.5,-1) -- ++(0,1.5) -- ++(1,0) -- ++(0,-1.5);
 \end{tikzpicture}
 \end{center}
 \end{frame}
