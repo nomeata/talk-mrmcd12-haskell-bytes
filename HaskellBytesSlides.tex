@@ -32,6 +32,7 @@
 \usetikzlibrary{shapes.multipart}
 \usetikzlibrary{arrows}
 \usepackage{hyperref}
+\usepackage{movie15}
 
 \usepackage{mathtools}
 \usepackage{amssymb}
@@ -127,6 +128,18 @@
 \end{tikzpicture}
 \end{center}
 \end{frame}
+
+\only<presentation>{
+\centering
+\frame[plain]{\textit{Investigation}}
+}
+
+\only<presentation>{
+\centering
+\frame[plain]{
+\includemovie[autoplay,mouse=true,mimetype=video/webm,poster=GC-frame1.png,inline=false,controls=true]{8cm}{6cm}{GC.webm}
+}
+}
 
 \only<presentation>{
 \centering

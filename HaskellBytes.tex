@@ -40,29 +40,32 @@
 
 
 \definecolor{light-gray}{gray}{0.95}
-\lstdefinestyle{haskell}{
-	language=Haskell
-	,literate=
-		{ö}{{\"o}}1
-	        {ä}{{\"a}}1
-                {ü}{{\"u}}1
+\lstdefinestyle{basic}{
         ,columns=flexible
         ,basewidth={.365em}
         ,keepspaces=True
-        ,texcl=true
-        ,basicstyle=\small\sffamily
-        ,stringstyle=\itshape
-        ,showstringspaces=false
-        ,keywords={module,where,open,import,using,renaming,to,data,let,in,with}
 	,belowskip=0pt
 	,backgroundcolor=\color{light-gray}
 	,frame=single
 	,xleftmargin=2em
 	,xrightmargin=2em
+        ,basicstyle=\small\sffamily
+        ,stringstyle=\itshape
+}
+\lstdefinestyle{haskell}{
+	style=basic
+	,language=Haskell
+	,literate=
+		{ö}{{\"o}}1
+	        {ä}{{\"a}}1
+                {ü}{{\"u}}1
+        ,texcl=true
+        ,showstringspaces=false
+        ,keywords={module,where,open,import,using,renaming,to,data,let,in,with}
 }
 \lstnewenvironment{haskell}{\lstset{style=haskell}}{}
 \lstnewenvironment{ghci}{\lstset{style=haskell}}{}
-\lstnewenvironment{shell}{\lstset{style=haskell}}{}
+\lstnewenvironment{shell}{\lstset{style=basic}}{}
 \newcommand{\li}{\lstinline[style=haskell]}
 
 
@@ -166,7 +169,10 @@ An der Stelle will ich demonstrieren warum man in GHC keinen Zugriff auf die eig
 0x0000000040507e70: 0x0000000040502648
 \end{ghci}
 
-Der gleiche Wert, plötzlich woanders! GHC verwendet standardmäßig einen kopierenden Garbage-Collector – alle noch benötigten Werte werden in einen komplett neuen Speicherbereich kopiert und der alte am Stück freigegeben. Das ist schneller und genauer als z.B. Referenzen zu zählen, aber dafür braucht man auch doppelt so viel physischen Speicher.
+Der gleiche Wert, plötzlich woanders! GHC verwendet standardmäßig einen kopierenden Garbage-Collector – alle noch benötigten Werte werden in einen komplett neuen Speicherbereich kopiert und der alte am Stück freigegeben. Das ist schneller und genauer als z.B. Referenzen zu zählen, aber dafür braucht man auch doppelt so viel physischen Speicher. Und für die denen ein Bild mehr als tausend Worte sagt habe ich das noch als \href{run:GC.webm}{Video} visualisiert.
+\begin{center}
+\includegraphics[width=.6\linewidth]{GC.png}
+\end{center}
 
 Es gibt noch einen weiteren Effekt den man hier jetzt gesehen hätte, würden wir das Programm wirklich ausführen (und nicht im Interpreter laufen lassen). Dann wäre die Ausgabe nämlich:
 \begin{shell}
@@ -327,6 +333,7 @@ Damit bin ich am Ende meines Vortrages. Wir haben uns die Mühe gemacht, all die
 \item Was wir hier gesehen haben ist in der Wissenschaft als \emph{Spineless, tagless G-machine} bekannt. \url{http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.53.3729}
 \item Das GHC-Wiki beschreibt die aktuelle Implementierung am pragmatischten, insbesondere \url{http://hackage.haskell.org/trac/ghc/wiki/Commentary/Rts/Storage/HeapObjects}.
 \item Wir haben hier meine Bibliothek ghc-heap-view (\url{http://hackage.haskell.org/package/ghc-heap-view}) und Dennis Felsing’s ghc-vis (\url{http://felsin9.de/nnis/ghc-vis/}) verwendet.
+\item Das Video habe ich mit Synfig erstellt. (\url{http://www.synfig.org/})
 \end{itemize}
 
 
