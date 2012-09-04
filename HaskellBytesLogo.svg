@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="481.8897pt"
+   height="340.1574pt"
+   viewBox="0 0 481.8897 340.1574"
+   version="1.1"
+   id="svg2"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="HaskellBytesLogo.svg"
+   inkscape:export-filename="/home/jojo/dokumente/Uni/info/mrmcd2012-haskell-bytes/HaskellBytesLogo.png"
+   inkscape:export-xdpi="47"
+   inkscape:export-ydpi="47">
+  <metadata
+     id="metadata22">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1568"
+     inkscape:window-height="900"
+     id="namedview20"
+     showgrid="false"
+     inkscape:zoom="1.5698821"
+     inkscape:cx="211.88637"
+     inkscape:cy="159.08531"
+     inkscape:window-x="32"
+     inkscape:window-y="1200"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2" />
+  <defs
+     id="defs4">
+    <clipPath
+       id="clip1">
+      <path
+         d="M 0 340.15625 L 481.890625 340.15625 L 481.890625 0 L 0 0 L 0 340.15625 Z M 0 340.15625 "
+         id="path7" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath3910">
+      <rect
+         style="color:#000000;fill:#000000;fill-opacity:1;stroke:none;stroke-width:5.6692915;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="rect3912"
+         width="65.737419"
+         height="394.47751"
+         x="113.42143"
+         y="24.929487"
+         transform="matrix(1,0,0.56064819,0.82805411,0,0)" />
+    </clipPath>
+  </defs>
+  <g
+     id="surface0">
+    <g
+       clip-path="url(#clip1)"
+       clip-rule="nonzero"
+       id="g10">
+      <path
+         style=" stroke:none;fill-rule: nonzero; fill: rgb(40%,40%,40%); fill-opacity: 1;"
+         d="M 0 340.15625 L 113.386719 170.078125 L 0 0 L 85.039062 0 L 198.425781 170.078125 L 85.039062 340.15625 L 0 340.15625 Z M 0 340.15625 "
+         id="path12" />
+      <path
+         style=" stroke:none;fill-rule: nonzero; fill: rgb(60%,60%,60%); fill-opacity: 1;"
+         d="M 113.386719 340.15625 L 226.773438 170.078125 L 113.386719 0 L 198.425781 0 L 425.195312 340.15625 L 340.15625 340.15625 L 269.292969 233.859375 L 198.425781 340.15625 L 113.386719 340.15625 Z M 113.386719 340.15625 "
+         id="path14" />
+      <path
+         style=" stroke:none;fill-rule: nonzero; fill: rgb(40%,40%,40%); fill-opacity: 1;"
+         d="M 387.402344 240.945312 L 349.609375 184.253906 L 481.890625 184.25 L 481.890625 240.945312 L 387.402344 240.945312 Z M 387.402344 240.945312 "
+         id="path16" />
+      <path
+         style=" stroke:none;fill-rule: nonzero; fill: rgb(40%,40%,40%); fill-opacity: 1;"
+         d="M 330.710938 155.90625 L 292.914062 99.214844 L 481.890625 99.210938 L 481.890625 155.90625 L 330.710938 155.90625 Z M 330.710938 155.90625 "
+         id="path18" />
+    </g>
+  </g>
+  <g
+     id="g3797"
+     transform="translate(-0.50959467,-13.249402)"
+     clip-path="url(#clipPath3910)">
+    <rect
+       transform="matrix(0.8,0,0,0.8,0,-1.1902573e-5)"
+       y="8.6049786"
+       x="-193.00813"
+       height="583.48334"
+       width="844.64941"
+       id="rect3795"
+       style="color:#000000;fill:#000000;fill-opacity:1;stroke:none;stroke-width:5.6692915;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <text
+       sodipodi:linespacing="89.999998%"
+       id="text2999"
+       y="37.459515"
+       x="-196.70268"
+       style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:89.99999762%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#00cc00;fill-opacity:1;stroke:none;font-family:LMMono10;-inkscape-font-specification:LMMono10"
+       xml:space="preserve"><tspan
+         sodipodi:role="line"
+         id="tspan3817"
+         x="-196.70268"
+         y="37.459515">0x000000000049B1C8 0x00007F16C0D04261 0x00007F16C0D04240</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3819"
+         x="-196.70268"
+         y="66.259514">0x000000000049B128 0x0000000000000068</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3821"
+         x="-196.70268"
+         y="95.059509">0x000000000049B1C8 0x00007F16C0D162A1 0x00007F16C0D16280</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3823"
+         x="-196.70268"
+         y="123.85951">0x000000000049B128 0x0000000000000061</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3825"
+         x="-196.70268"
+         y="152.65952">0x000000000049B1C8 0x00007F16C0D262A1 0x00007F16C0D26280</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3827"
+         x="-196.70268"
+         y="181.4595">0x000000000049B128 0x000000000000006C</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3829"
+         x="-196.70268"
+         y="210.25951">0x000000000049B1C8 0x00007F16C0D362A1 0x00007F16C0D36280</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3831"
+         x="-196.70268"
+         y="239.05951">0x000000000049B128 0x000000000000006C</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3833"
+         x="-196.70268"
+         y="267.8595">0x000000000049B1C8 0x00007F16C0D462A1 0x00007F16C0D46280</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3835"
+         x="-196.70268"
+         y="296.65952">0x000000000049B128 0x000000000000006F</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3837"
+         x="-196.70268"
+         y="325.4595">0x000000000049B1C8 0x00007F16C0D462A1 0x00007F16C0D46280</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3839"
+         x="-196.70268"
+         y="354.25952">0x000000000049B128 0x000000000000006F</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3841"
+         x="-196.70268"
+         y="383.05951">0x000000000049B1C8 0x00007F16C0D462A1 0x00007F16C0D46280</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3843"
+         x="-196.70268"
+         y="411.8595">0x000000000049B128 0x000000000000006F</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3845"
+         x="-196.70268"
+         y="440.65952">0x000000000049B1C8 0x00007F16C0D462A1 0x00007F16C0D46280</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3847"
+         x="-196.70268"
+         y="469.4595">0x000000000049B128 0x000000000000006F</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3849"
+         x="-196.70268"
+         y="498.25949">0x000000000049B1A8</tspan><tspan
+         sodipodi:role="line"
+         id="tspan3851"
+         x="-196.70268"
+         y="527.05951"></tspan></text>
+  </g>
+</svg>

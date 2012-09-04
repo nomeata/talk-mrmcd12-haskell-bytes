@@ -1,0 +1,155 @@
+% © Copyright 2012 Joachim Breitner
+% Distributed under the terms of the Creative Commons Attribution license.
+\documentclass{beamer}
+%\documentclass{article}
+%\usepackage{beamerarticle}
+
+\newlength{\px}
+\setlength{\px}{0.0009765625\paperwidth}
+
+\usetheme[footline=authortitle,compress]{Nomeata}
+
+\setbeamertemplate{headline}{}
+
+\AtBeginSection[]
+{
+%  \begin{frame}<beamer>
+%    \tableofcontents[currentsection,currentsubsection]
+%  \end{frame}
+}
+
+%\usecolortheme{orchid}
+\usecolortheme{crane}
+
+\usepackage[T3,OT1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathreplacing,calc}
+\usetikzlibrary{positioning,calc,decorations,decorations.pathmorphing,shapes.geometric,matrix}
+\usepackage{hyperref}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+\usepackage{listings}
+
+\definecolor{light-gray}{gray}{0.95}
+\lstdefinestyle{haskell}{
+        language=Haskell
+        ,literate=
+                {ö}{{\"o}}1
+                {ä}{{\"a}}1
+                {ü}{{\"u}}1
+        ,columns=flexible
+        ,basewidth={.365em}
+        ,keepspaces=True
+        ,texcl=true
+        ,basicstyle=\small\sffamily
+        ,stringstyle=\itshape
+        ,showstringspaces=false
+        ,keywords={module,where,open,import,using,renaming,to,data,let,in,with}
+        ,belowskip=0pt
+        ,backgroundcolor=\color{light-gray}
+        ,frame=single
+        ,xleftmargin=2em
+        ,xrightmargin=2em
+        }
+
+
+% \pause mit verstecken
+\newcommand{\hide}{\onslide+<+(1)->}
+
+\title{Haskell Bytes}
+\subtitle{Eine geführte Tour durch den Hauptspeicher eines Haskell-Programms}
+\author{Joachim Breitner}
+%\institute{Karlsruher Institut für Technologie, IPD Snelting}
+\titlegraphic{\includegraphics[width=11em]{HaskellBytesLogo}}
+\date{MRMCD 12, 8. September 2012}
+
+\DeclareTextSymbol\textlambda{T3}{171}           % Lambda
+\DeclareTextSymbolDefault\textlambda{T3}
+\DeclareUnicodeCharacter{03BB}{\textlambda}
+
+
+\begin{document}
+
+\frame[plain]{\titlepage \vfill
+\raggedleft
+\includegraphics[width=5em]{Telekom}
+
+}
+\only<article>{\maketitle}
+
+\only<presentation>{
+\centering
+\frame[plain]{\textit{Demonstration}}
+}
+
+\begin{frame}
+\frametitle{Drei Arten von Closures}
+\begin{center}
+\begin{tikzpicture}[
+        closure/.style={shape=rectangle, rounded corners, minimum width=2.8cm,fill=blue!40,font=\bfseries},
+        prop/.style={},
+	brace/.style={decoration={brace,amplitude=0.5em},decorate,thick}
+	]
+\hide
+\node[closure] (con) {Konstruktor};
+\hide
+\node[closure] at (3,0) (fun) {Funktion};
+\hide
+\node[closure] at (6,0) (thunk) {Thunk};
+\hide
+\draw [brace] (con.south east) -- (con.south west);
+\path (con) ++(0,-0.7) node[prop] {Parameter};
+\hide
+\path (con) ++(0,-1.2) node[prop] {Welcher Konstr.};
+\hide
+\draw [brace] (thunk.south east) -- (fun.south west);
+\path (4.5,0)  ++(0,-0.7) node[prop] {Code};
+\hide
+\path (4.5,0)  ++(0,-1.2) node[prop] {Freie Variablen};
+\hide
+\draw [brace] ($(thunk.south east)+(0,-1.5)$) -- ($(con.south west)+(0,-1.5)$);
+\path (3,-1.5)  ++(0,-0.7) node[prop] {Größe};
+\hide
+\path (3,-1.5)  ++(0,-0.7) ++(0,-0.5) node[prop] {Layout};
+\hide
+\path (3,-1.5)  ++(0,-0.7) ++(0,-0.5) ++(0,-0.5) node[prop] (typ) {Typ};
+\hide
+\draw [line cap=rounded, ultra thick, color=blue] (typ.south west) -- (typ.north east);
+\onslide+<0->
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\only<presentation>{
+\centering
+\frame[plain]{\textit{Investigation}}
+}
+
+
+\begin{frame}
+\frametitle{Drei Arten von Closures}
+\begin{center}
+\begin{tikzpicture}[
+        closure/.style={shape=rectangle, rounded corners, minimum width=2.8cm,fill=blue!40,font=\bfseries},
+        prop/.style={},
+	brace/.style={decoration={brace,amplitude=0.5em},decorate,thick}
+	]
+\onslide+<0->
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\setbeamercolor{normal text}{bg=black}
+\setbeamertemplate{background canvas}{}
+\frame<presentation>[plain]{
+\strut
+\vfill
+\small{© 2012 Joachim Breitner.\\
+Distributed under the terms of the Creative Commons Attribution license.}
+}
+\end{document}
+
