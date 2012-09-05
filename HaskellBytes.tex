@@ -86,7 +86,16 @@ main = do
 \end{haskell}
 und füttern ihn mit einer 100MB großen Textdatei. Mit dem Parameter \texttt{-RTS -t} können wir uns Statistiken anzeigen lassen und erfahren, dass das Programm 2521MB Speicher braucht – über 24$\times$ zu viel!
 
-Manchmal aber überrascht uns Haskell auch positiv. Wenn wir die dritte Zeile löschen und
+Ein anderes, klassiches Beispiel für unerwartetes Laufzeitverhalten ist der folgende Code, der die länge einer Liste zählt:
+\lstinputlisting[style=haskell,linerange=3-6]{Count.hs}\mylabel{Haskell}
+Im Interpreter sehen wir, dass der Code unnötig viel Speicher verbraucht und dann mit einem Stack Overflow abbricht:
+\begin{ghci}
+*Count> let x = count 0 [0..100000000]
+*Count> x
+Just *** Exception: stack overflow
+\end{ghci}
+
+Manchmal aber überrascht uns Haskell auch positiv. Wenn wir, wieder beim ersten Programm, die dritte Zeile löschen und
 \begin{haskell}
 main = do
     input <- getContents
@@ -227,7 +236,7 @@ Einfache Funktionen liegen im statischen Code-Bereich und enhalten genau einen P
 
 \subsection{Thunks}
 
-Das wars erstmal von den Funktionen und wir wenden uns Thunks zu, die in gewisser weise nichts anderes sind als Funktionen ohne Parameter. Da es jetzt langsam kompliziert wird schauen wir uns nicht mehr den Speicher direkt an, sondern verwenden \li-ghc-vis-, ein Tool das Dennis Felsing in seiner Bachelorarbeit bei mir gerade entwickelt. Wir probieren folgenden Code im Modul \li-InfLists-
+Das wars erstmal von den Funktionen und wir wenden uns Thunks zu, die in gewisser weise nichts anderes sind als Funktionen ohne Parameter. Da es jetzt langsam kompliziert wird schauen wir uns nicht mehr den Speicher direkt an, sondern verwenden \li!ghc-vis!, ein Tool das Dennis Felsing in seiner Bachelorarbeit bei mir gerade entwickelt. Wir probieren folgenden Code im Modul \li-InfLists-
 \begin{haskell}
 infList f x = f x : infList f x
 l = infList (+19) 23
@@ -259,6 +268,23 @@ und untersuchen \li-l3 = infList2 (+19) (23::Int)- mit \li-:view-. Tatsächlich 
 
 Leider sind solche selbstbezüglichen Datenstrukturen fragil, wenn man sie „ändern“ will; schon ein einfaches \li-map negate l2- zerstört die Struktur, wie man hier gut sehen kann.
 
+
+An dieser Stelle will ich wieder auf das zweite Beispiel vom Anfang zurückkommen. Jetzt können wir mit \li!ghc-vis! dem Stack Overflow auf den Grund gehen: 
+\begin{ghci}
+*Count> :switch
+*Count> let x = count 0 [1..5]
+*Count> :view x
+\end{ghci}
+Wir sehen ganze viele Thunks, die nacheinander die \li-0- modifizieren. Das sind eben die Thunks, die für \li-(+1)- stehen. Macht ja auch Sinn: Bevor wir die Zahl nicht benötigen, wird keine Berechnung ausgeführt. Trotzdem muss die Berechnung ja gespeichert werden. Klickt man auf einen der Thunks, kollabiert der Turm darunter in einem Rutsch.
+
+Besser ist folgender Code:
+\lstinputlisting[style=haskell,linerange=8-10]{Count.hs}
+Der Operator \li-$!$- sorgt dafür, dass das Argument (hier \li-n+1-) ausgewertet wird, bevor die Funktion (hier \li-count2-) aufgerufen wird. Dadurch wird stets nur eine Zahl, und kein Thunk, übergeben. Es tritt kein Stack Overflow auf, der Speicherverbrauch ist Konstant (und mit \li!ghc-vis! gibt es nichts zu sehen):
+\begin{ghci}
+*Count> let x = count2 0 [1..100000000]
+*Count> x
+100000000
+\end{ghci}
 
 
 \section{Der Info-Pointer}
@@ -333,7 +359,7 @@ Damit bin ich am Ende meines Vortrages. Wir haben uns die Mühe gemacht, all die
 \begin{itemize}
 \item Was wir hier gesehen haben ist in der Wissenschaft als \emph{Spineless, tagless G-machine} bekannt. \url{http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.53.3729}
 \item Das GHC-Wiki beschreibt die aktuelle Implementierung am pragmatischten, insbesondere \url{http://hackage.haskell.org/trac/ghc/wiki/Commentary/Rts/Storage/HeapObjects}.
-\item Wir haben hier meine Bibliothek ghc-heap-view (\url{http://hackage.haskell.org/package/ghc-heap-view}) und Dennis Felsing’s ghc-vis (\url{http://felsin9.de/nnis/ghc-vis/}) verwendet.
+\item Wir haben hier meine Bibliothek ghc-heap-view (\url{http://hackage.haskell.org/package/ghc-heap-view}) und Dennis Felsing’s \li!ghc-vis! (\url{http://felsin9.de/nnis/ghc-vis/}) verwendet.
 \item Das Video habe ich mit Synfig erstellt. (\url{http://www.synfig.org/})
 \end{itemize}
 
