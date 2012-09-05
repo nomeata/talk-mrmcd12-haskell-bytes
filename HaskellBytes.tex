@@ -13,6 +13,7 @@
 \usepackage{enumerate}
 \usepackage{wrapfig}
 \usepackage[safe]{tipa} % for \textlambda
+\usepackage{adjustbox}
 
 \usepackage[pdfauthor={Joachim Breitner},pdftitle={Haskell Bytes},pdfsubject={Eine Führung durch den Hauptspeicher eines Haskell-Programms}]{hyperref}
 \usepackage{listings}
@@ -52,6 +53,10 @@
         ,basicstyle=\small\sffamily
         ,stringstyle=\itshape
 }
+\lstdefinestyle{shell}{
+	,style=basic
+	,basicstyle=\footnotesize\ttfamily
+}
 \lstdefinestyle{haskell}{
 	style=basic
 	,language=Haskell
@@ -66,8 +71,36 @@
 
 \newcommand{\mylabel}[1]{\raisebox{2em}[0pt][0pt]{\makebox[0pt][l]{\makebox[\linewidth][r]{\color{gray}{\sffamily #1}\hspace{2em}}}}\ignorespaces}
 \lstnewenvironment{haskell}{\lstset{style=haskell}}{\mylabel{Haskell}\pagebreak[2]}
-\lstnewenvironment{ghci}{\lstset{style=haskell}}{\mylabel{GHCi}\pagebreak[2]}
-\lstnewenvironment{shell}{\lstset{style=basic}}{\mylabel{Shell}}
+%\lstnewenvironment{ghci}{\lstset{style=haskell}}{\mylabel{GHCi}\pagebreak[2]}
+\lstnewenvironment{shell}{\lstset{style=shell}}{\mylabel{Shell}\pagebreak[2]}
+
+\begingroup
+\gdef\savedgt{>}%
+\catcode`\>=\active%
+\catcode`\^^M=\active%
+\gdef\foo{%
+\catcode`\>=\active%
+\catcode`^^M=\active%
+\def > ##1^^M{\savedgt{} \li!##1!\par}%
+\def ^^M{\par}%
+}%
+\endgroup
+
+\newlength{\mylength}
+\newenvironment{ghci}{
+\par
+\setlength{\mylength}{\linewidth}
+\addtolength{\mylength}{-4em}
+\strut\hspace{2em}\hspace{-\fboxsep}\begin{adjustbox}{minipage={\mylength},valign=b,margin*=\fboxsep,bgcolor=light-gray,frame}%
+\begingroup
+\small\ttfamily%
+\foo
+}{
+\endgroup
+\end{adjustbox}%\par
+\adjustbox{lap=-\width}{\color{gray}{\sffamily GHCi}\hspace{\fboxsep}\hspace{\fboxrule}}
+\par
+}
 \newcommand{\inputhaskell}[1]{\lstinputlisting[style=haskell]{#1}\mylabel{Haskell}}
 \newcommand{\li}{\lstinline[style=haskell]}
 
@@ -241,7 +274,7 @@ l = infList (+19) 23
 \end{haskell}
 mittels
 \begin{ghci}
-Prelude Inflists> :script /home/jojo/dokumente/Uni/WM/arbeiten/lazy-vis/vis/ghci
+Prelude InfLists> :script /home/jojo/.cabal/share/ghc-vis-0.1/ghci
 Prelude Inflists> :vis
 Prelude Inflists> :switch
 Prelude Inflists> :view l
@@ -276,6 +309,8 @@ Leider sind solche selbstbezüglichen Datenstrukturen fragil, wenn man sie „ä
 
 An dieser Stelle will ich wieder auf das zweite Beispiel vom Anfang zurückkommen. Jetzt können wir mit \li!ghc-vis! dem Stack Overflow auf den Grund gehen: 
 \begin{ghci}
+*Count> :script /home/jojo/.cabal/share/ghc-vis-0.1/ghci
+*Count> :vis
 *Count> :switch
 *Count> let x = count 0 [1..5]
 *Count> :view x
@@ -358,9 +393,9 @@ Was aber am häufigsten mit so einem Closure passiert ist, dass er ausgeführt w
 
 \section{Das Primzahlensieb}
 
-Falls es die Zeit erlaubt will ich noch einem weiteren Programm bei der Ausführung zuschauen, nämlich der bekannten, sehr eleganten Definition der Primzahlen:
+Falls es die Zeit erlaubt will ich noch einem weiteren Programm bei der Ausführung zuschauen, nämlich dieser bekannten, sehr eleganten Definition der Primzahlen:
 \inputhaskell{Sieve.hs}
-Hier erkennt man schön die immer länger werdende Liste von Thunks, die jeweils für eine Primzahl deren vielfache aus der Liste entfernt:
+Hier erkennt man schön die immer länger werdende Liste von Thunks, die jeweils für eine Primzahl deren Vielfache aus der Liste entfernt:
 
 \begin{center}
 \includegraphics[width=0.2\linewidth]{vis-output-sieve.pdf}
