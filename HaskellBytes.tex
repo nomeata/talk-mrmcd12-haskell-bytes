@@ -279,9 +279,8 @@ Zum Schluss will ich noch darauf eingehen, was das erste Wort jedes Closures ist
 \begin{scope}[yshift=-0.7cm, xshift=1.2*\ux]
 \draw
   (0,0) node[word] (tbl) {Code-Pointer}
-++(-0.25,-1) node[halfword] {\#ptr}
-++(+0.5,0) node[halfword] {\#nptr}
-++(-0.25,-1) node[word] {Closure-Typ}
+++(-0.25,-1) node[halfword] {\#ptr} ++(+0.5,0) node[halfword] {\#nptr} ++(-0.25,0)
+++(-0.25,-1) node[halfword] {Typ} ++(+0.5,0) node[halfword] {SRT} ++ (-0.25,0)
 ++(0,-1) node[word] {ggf. Konstruktor}
 ++(0,-1) node[word] {ggf. Stelligkeit};
 \end{scope}
@@ -312,9 +311,8 @@ Was aber am häufigsten mit so einem Closure passiert ist, dass er ausgeführt w
 \draw
   (0,0) node[word] {ggf. Konstruktor}
 ++(0,-1) node[word] {ggf. Stelligkeit}
-++(-0.25,-1) node[halfword] {\#ptr}
-++(+0.5,0) node[halfword] {\#nptr}
-++(-0.25,-1) node[word] {Closure-Typ}
+++(-0.25,-1) node[halfword] {\#ptr} ++(+0.5,0) node[halfword] {\#nptr} ++(-0.25,0)
+++(-0.25,-1) node[halfword] {Typ} ++(+0.5,0) node[halfword] {SRT} ++ (-0.25,0)
 ++(0,-1) node[word,draw=none] (code) {Entry code};
 \end{scope}
 \draw[*->] (ip.south) |- (code.west);
