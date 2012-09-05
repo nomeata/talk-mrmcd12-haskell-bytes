@@ -63,9 +63,12 @@
         ,showstringspaces=false
         ,keywords={module,where,open,import,using,renaming,to,data,let,in,with}
 }
-\lstnewenvironment{haskell}{\lstset{style=haskell}}{}
-\lstnewenvironment{ghci}{\lstset{style=haskell}}{}
-\lstnewenvironment{shell}{\lstset{style=basic}}{}
+
+\newcommand{\mylabel}[1]{\raisebox{2em}[0pt][0pt]{\makebox[0pt][l]{\makebox[\linewidth][r]{\color{gray}{#1}\hspace{2em}}}}}
+\lstnewenvironment{haskell}{\lstset{style=haskell}}{\mylabel{Haskell}}
+\lstnewenvironment{ghci}{\lstset{style=haskell}}{\mylabel{GHCi}\pagebreak[2]}
+\lstnewenvironment{shell}{\lstset{style=basic}}{\mylabel{Shell}}
+\newcommand{\inputhaskell}[1]{\lstinputlisting[style=haskell]{#1}\mylabel{Haskel}}
 \newcommand{\li}{\lstinline[style=haskell]}
 
 
@@ -210,7 +213,7 @@ An dieser Stelle sollte klar sein dass sich der eingebaute \li-String--Datentyp 
 
 Wenden wir uns nun der nächsten Art von Closures zu, nämlich Funktionen. Weil es hier interpretiert recht anders als kompiliert funktioniert lasse ich folgendes Programm laufen:
 
-\lstinputlisting[style=haskell]{FunClosures.hs}
+\lstinputlisting[style=haskell]{FunClosures.hs}\mylabel{Haskell}
 was zu folgender Ausgabe führt:
 \begin{shell}
 $ ghc --make FunClosures.hs -O && ./FunClosures  1 2 3
