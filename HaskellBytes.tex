@@ -221,7 +221,7 @@ An dieser Stelle sollte klar sein dass sich der eingebaute \li-String--Datentyp 
 
 Wenden wir uns nun der nächsten Art von Closures zu, nämlich Funktionen. Weil es hier interpretiert recht anders als kompiliert funktioniert lasse ich folgendes Programm laufen:
 
-\lstinputlisting[style=haskell]{FunClosures.hs}\mylabel{Haskell}
+\inputhaskell{FunClosures.hs}
 was zu folgender Ausgabe führt:
 \begin{shell}
 $ ghc --make FunClosures.hs -O && ./FunClosures  1 2 3
@@ -258,6 +258,10 @@ l2 = map negate l
 \end{haskell}
 anzuschauen und zu beobachten, wie die Auswertung der einen Liste die andere beeinflusst.
 
+\begin{center}
+\includegraphics[width=0.4\linewidth]{vis-output1.pdf}
+\end{center}
+
 Zum Vergleich nehmen wir diese Funktion für unendliche Listen, die -- semantisch -- das gleiche macht:
 \begin{haskell}
 infList2 f x = let l = f x : l in l
@@ -266,6 +270,9 @@ und untersuchen \li-l3 = infList2 (+19) (23::Int)- mit \li-:view-. Tatsächlich 
 
 Leider sind solche selbstbezüglichen Datenstrukturen fragil, wenn man sie „ändern“ will; schon ein einfaches \li-map negate l2- zerstört die Struktur, wie man hier gut sehen kann.
 
+\begin{center}
+\includegraphics[width=0.2\linewidth]{vis-output2.pdf}
+\end{center}
 
 An dieser Stelle will ich wieder auf das zweite Beispiel vom Anfang zurückkommen. Jetzt können wir mit \li!ghc-vis! dem Stack Overflow auf den Grund gehen: 
 \begin{ghci}
@@ -348,6 +355,16 @@ Was aber am häufigsten mit so einem Closure passiert ist, dass er ausgeführt w
 \end{tikzpicture}
 \end{center}
 
+
+\section{Das Primzahlensieb}
+
+Falls es die Zeit erlaubt will ich noch einem weiteren Programm bei der Ausführung zuschauen, nämlich der bekannten, sehr eleganten Definition der Primzahlen:
+\inputhaskell{Sieve.hs}
+Hier erkennt man schön die immer länger werdende Liste von Thunks, die jeweils für eine Primzahl deren vielfache aus der Liste entfernt:
+
+\begin{center}
+\includegraphics[width=0.2\linewidth]{vis-output-sieve.pdf}
+\end{center}
 
 \section{Fazit}
 
