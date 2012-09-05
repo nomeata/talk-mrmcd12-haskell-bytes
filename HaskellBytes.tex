@@ -64,8 +64,8 @@
         ,keywords={module,where,open,import,using,renaming,to,data,let,in,with}
 }
 
-\newcommand{\mylabel}[1]{\raisebox{2em}[0pt][0pt]{\makebox[0pt][l]{\makebox[\linewidth][r]{\color{gray}{#1}\hspace{2em}}}}}
-\lstnewenvironment{haskell}{\lstset{style=haskell}}{\mylabel{Haskell}}
+\newcommand{\mylabel}[1]{\raisebox{2em}[0pt][0pt]{\makebox[0pt][l]{\makebox[\linewidth][r]{\color{gray}{\sffamily #1}\hspace{2em}}}}\ignorespaces}
+\lstnewenvironment{haskell}{\lstset{style=haskell}}{\mylabel{Haskell}\pagebreak[2]}
 \lstnewenvironment{ghci}{\lstset{style=haskell}}{\mylabel{GHCi}\pagebreak[2]}
 \lstnewenvironment{shell}{\lstset{style=basic}}{\mylabel{Shell}}
 \newcommand{\inputhaskell}[1]{\lstinputlisting[style=haskell]{#1}\mylabel{Haskel}}
@@ -180,7 +180,6 @@ An der Stelle will ich demonstrieren warum man in GHC keinen Zugriff auf die eig
 0x00007f9c7a150210/1: 0x0000000040502548 0x000000000000006F
 0x0000000040507e70: 0x0000000040502648
 \end{ghci}
-
 Der gleiche Wert, plötzlich woanders! GHC verwendet standardmäßig einen kopierenden Garbage-Collector – alle noch benötigten Werte werden in einen komplett neuen Speicherbereich kopiert und der alte am Stück freigegeben. Das ist schneller und genauer als z.B. Referenzen zu zählen, aber dafür braucht man auch doppelt so viel physischen Speicher. Und für die denen ein Bild mehr als tausend Worte sagt habe ich das noch als \href{run:GC.webm}{Video} visualisiert.
 \begin{center}
 \includegraphics[width=.6\linewidth]{GC.png}
@@ -231,7 +230,6 @@ $ ghc --make FunClosures.hs -O && ./FunClosures  1 2 3
 0x00007f73f8d0e880/2
 0x00007f73f8d10348/1: 0x0000000000406498 0x00007F73F8D0E882
 \end{shell}
-
 Einfache Funktionen liegen im statischen Code-Bereich und enhalten genau einen Pointer irgendwo hin. Das gilt auch für lokal definierte Funktionen. Interessant ist die Funktion \li-h-. Diese verwendet einen Wert (\li-a-) aus einer lokalen Variable. Das heißt der Code für \li-main- legt eine neue Funktionen-Closure auf dem Heap an, die zwei Wörter groß ist: Ein Verweis auf den statischen Code und eine Referenz auf den Wert von \li-a-. 
 
 \subsection{Thunks}
@@ -278,13 +276,14 @@ An dieser Stelle will ich wieder auf das zweite Beispiel vom Anfang zurückkomme
 Wir sehen ganze viele Thunks, die nacheinander die \li-0- modifizieren. Das sind eben die Thunks, die für \li-(+1)- stehen. Macht ja auch Sinn: Bevor wir die Zahl nicht benötigen, wird keine Berechnung ausgeführt. Trotzdem muss die Berechnung ja gespeichert werden. Klickt man auf einen der Thunks, kollabiert der Turm darunter in einem Rutsch.
 
 Besser ist folgender Code:
-\lstinputlisting[style=haskell,linerange=8-10]{Count.hs}
+\lstinputlisting[style=haskell,linerange=8-10]{Count.hs}\mylabel{Haskell}
 Der Operator \li-$!$- sorgt dafür, dass das Argument (hier \li-n+1-) ausgewertet wird, bevor die Funktion (hier \li-count2-) aufgerufen wird. Dadurch wird stets nur eine Zahl, und kein Thunk, übergeben. Es tritt kein Stack Overflow auf, der Speicherverbrauch ist Konstant (und mit \li!ghc-vis! gibt es nichts zu sehen):
 \begin{ghci}
 *Count> let x = count2 0 [1..100000000]
 *Count> x
 100000000
 \end{ghci}
+Nur der Ehrlichkeit halber: Bei diesem einfachen Programm hätte der Compiler das auch selbst gemacht, wenn ich die Funktion nicht durch das \li-Just- künstlich nicht-strikt im Argument gemacht hätte.
 
 
 \section{Der Info-Pointer}
