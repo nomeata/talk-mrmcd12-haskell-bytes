@@ -70,7 +70,7 @@
 }
 
 \newcommand{\mylabel}[1]{\raisebox{2em}[0pt][0pt]{\makebox[0pt][l]{\makebox[\linewidth][r]{\color{gray}{\sffamily #1}\hspace{2em}}}}\ignorespaces}
-\lstnewenvironment{haskell}{\lstset{style=haskell}}{\mylabel{Haskell}\pagebreak[2]}
+\lstnewenvironment{haskell}{\pagebreak[3]\lstset{style=haskell}}{\mylabel{Haskell}\pagebreak[2]}
 %\lstnewenvironment{ghci}{\lstset{style=haskell}}{\mylabel{GHCi}\pagebreak[2]}
 \lstnewenvironment{shell}{\lstset{style=shell}}{\mylabel{Shell}\pagebreak[2]}
 
@@ -91,6 +91,8 @@
 \par
 \setlength{\mylength}{\linewidth}
 \addtolength{\mylength}{-4em}
+\addtolength{\mylength}{-\fboxrule}
+\addtolength{\mylength}{-\fboxrule}
 \strut\hspace{2em}\hspace{-\fboxsep}\begin{adjustbox}{minipage={\mylength},valign=b,margin*=\fboxsep,bgcolor=light-gray,frame}%
 \begingroup
 \small\ttfamily%
