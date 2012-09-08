@@ -111,7 +111,7 @@
 
 \maketitle
 
-Haskell ist eine tolle Programmiersprache; ich schätze ihr das alle schon wisst, sonst wärt ihr wohl nicht in meinem Vortrag. Aber manchmal wird man von Haskella auch enttäuscht. Nehmen wir folgenden Code:
+Haskell ist eine tolle Programmiersprache; ich schätze ihr das alle schon wisst, sonst wärt ihr wohl nicht in meinem Vortrag. Aber manchmal wird man von Haskell auch enttäuscht. Nehmen wir folgenden Code:
 \begin{haskell}
 main = do
     input <- getContents
@@ -121,7 +121,7 @@ main = do
 \end{haskell}
 und füttern ihn mit einer 100MB großen Textdatei. Mit dem Parameter \texttt{-RTS -t} können wir uns Statistiken anzeigen lassen und erfahren, dass das Programm 2521MB Speicher braucht – über 24$\times$ zu viel!
 
-Ein anderes, klassiches Beispiel für unerwartetes Laufzeitverhalten ist der folgende Code, der die länge einer Liste zählt:
+Ein anderes, klassiches Beispiel für unerwartetes Laufzeitverhalten ist der folgende Code, der die Länge einer Liste zählt:
 \lstinputlisting[style=haskell,linerange=3-6]{Count.hs}\mylabel{Haskell}
 Im Interpreter sehen wir, dass der Code unnötig viel Speicher verbraucht und dann mit einem Stack Overflow abbricht:
 \begin{ghci}
@@ -321,7 +321,7 @@ Wir sehen ganze viele Thunks, die nacheinander die \li-0- modifizieren. Das sind
 
 Besser ist folgender Code:
 \lstinputlisting[style=haskell,linerange=8-10]{Count.hs}\mylabel{Haskell}
-Der Operator \li-$!$- sorgt dafür, dass das Argument (hier \li-n+1-) ausgewertet wird, bevor die Funktion (hier \li-count2-) aufgerufen wird. Dadurch wird stets nur eine Zahl, und kein Thunk, übergeben. Es tritt kein Stack Overflow auf, der Speicherverbrauch ist Konstant (und mit \li!ghc-vis! gibt es nichts zu sehen):
+Der Operator \li-$!- sorgt dafür, dass das Argument (hier \li-n+1-) ausgewertet wird, bevor die Funktion (hier \li-count2-) aufgerufen wird. Dadurch wird stets nur eine Zahl, und kein Thunk, übergeben. Es tritt kein Stack Overflow auf, der Speicherverbrauch ist Konstant (und mit \li!ghc-vis! gibt es nichts zu sehen):
 \begin{ghci}
 *Count> let x = count2 0 [1..100000000]
 *Count> x
